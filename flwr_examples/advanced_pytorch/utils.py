@@ -1,6 +1,7 @@
 import torch
 import torchvision.transforms as transforms
 from torchvision.datasets import CIFAR10
+from tqdm import tqdm
 
 import warnings
 
@@ -20,8 +21,8 @@ def load_data():
         ]
     )
 
-    trainset = CIFAR10("./dataset", train=True, download=True, transform=transform)
-    testset = CIFAR10("./dataset", train=False, download=True, transform=transform)
+    trainset = CIFAR10("./data", train=True, download=True, transform=transform)
+    testset = CIFAR10("./data", train=False, download=True, transform=transform)
 
     num_examples = {"trainset": len(trainset), "testset": len(testset)}
     return trainset, testset, num_examples
@@ -53,7 +54,7 @@ def train(net, trainloader, valloader, epochs, device: str = "cpu"):
     )
     net.train()
     for _ in range(epochs):
-        for images, labels in trainloader:
+        for images, labels in tqdm(trainloader):
             images, labels = images.to(device), labels.to(device)
             optimizer.zero_grad()
             loss = criterion(net(images), labels)
@@ -82,7 +83,7 @@ def test(net, testloader, steps: int = None, device: str = "cpu"):
     correct, total, loss = 0, 0, 0.0
     net.eval()
     with torch.no_grad():
-        for batch_idx, (images, labels) in enumerate(testloader):
+        for batch_idx, (images, labels) in tqdm(enumerate(testloader)):
             images, labels = images.to(device), labels.to(device)
             outputs = net(images)
             loss += criterion(outputs, labels).item()
