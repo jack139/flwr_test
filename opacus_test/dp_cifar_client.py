@@ -16,7 +16,7 @@ def load_data():
     transform = transforms.Compose(
         [transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]
     )
-    data = CIFAR10("./data", train=True, download=True, transform=transform)
+    data = CIFAR10("../data", train=True, download=True, transform=transform)
     split = math.floor(len(data) * PARAMS["train_split"])
     trainset = torch.utils.data.Subset(data, list(range(0, split)))
     trainset = torch.utils.data.Subset(data, list(range(split, len(data))))
