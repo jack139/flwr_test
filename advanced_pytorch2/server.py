@@ -75,6 +75,7 @@ def get_evaluate_fn(model: torch.nn.Module, toy: bool):
 
 net = utils.load_model()
 
+# 自定义策略，保存checkpoint, 合并计算 val 结构
 class CustomFedAvgStrategy(fl.server.strategy.FedAvg):
     def aggregate_fit(
         self,
@@ -148,7 +149,7 @@ def main():
 
     model = utils.load_model()
 
-    # load pretrained weights
+    # 如果有 checkpoint, 则装入时间最近的
     list_of_files = [fname for fname in glob.glob("ckpt/model_round_*")]
     if len(list_of_files) > 0:
         latest_round_file = max(list_of_files, key=os.path.getctime)
