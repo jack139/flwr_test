@@ -1,5 +1,6 @@
 import os
 import glob
+from pathlib import Path
 
 from typing import Dict, Optional, Tuple, List, Union
 from collections import OrderedDict
@@ -177,6 +178,11 @@ def main():
         server_address="0.0.0.0:8080",
         config=fl.server.ServerConfig(num_rounds=4),
         strategy=strategy,
+        certificates=(
+            Path(".cache/certificates/ca.crt").read_bytes(),
+            Path(".cache/certificates/server.pem").read_bytes(),
+            Path(".cache/certificates/server.key").read_bytes(),
+        )
     )
 
 

@@ -1,3 +1,4 @@
+from pathlib import Path
 import utils
 from torch.utils.data import DataLoader
 import torchvision.datasets
@@ -149,7 +150,11 @@ def main() -> None:
         # Start Flower client
         client = CifarClient(trainset, testset, device, args.partition)
 
-        fl.client.start_numpy_client(server_address="0.0.0.0:8080", client=client)
+        fl.client.start_numpy_client(
+            server_address="localhost:8080",
+            client=client,
+            root_certificates=Path(".cache/certificates/ca.crt").read_bytes(),
+        )
 
 
 if __name__ == "__main__":

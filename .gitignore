@@ -28,3 +28,4 @@ colab/
 *.weights
 *.zip
 *.gz
+.cache
